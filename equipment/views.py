@@ -18,7 +18,7 @@ import re
 @never_cache
 @csrf_protect
 def register_user(request):
-    response_data = {'error' : '', 'msg': '', 'ferr': ''}
+    response_data = {'error' : '', 'msg': ''}
     
     if request.method == 'GET':
         unum = request.GET.get('unum', '')
