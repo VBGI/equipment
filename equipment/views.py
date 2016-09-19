@@ -25,7 +25,7 @@ def register_user(request):
         pk = request.GET.get('pk', '')
         obj = Application.objects.filter(unum=unum, id=pk)
         if obj.exists():
-            send_mail(app_created_theme.format(),
+            send_mail(app_created_theme.format(), # TODO: needs to be updated 
                       app_deleted % (obj[0].name, obj[0].equipment,
                                      obj[0].startdate, obj[0].enddate),
                       'equipment@botsad.ru', [cmail], fail_silently=True)
