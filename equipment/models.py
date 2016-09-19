@@ -30,7 +30,9 @@ class Application(models.Model):
                             verbose_name=_('заказчик'))
     organization = models.CharField(max_length=300, default='', blank=True,
                                     verbose_name=_('организация'))
-    email = models.EmailField(blank=False) 
+    email = models.EmailField(blank=False)
+    phone = models.CharField(max_length=20, default='', verbose_name=_('телефон'))
+     
     content = models.TextField(blank=True, default='',
                                verbose_name=_('дополнительно'))
     status = models.CharField(blank=True, verbose_name=_('статус'),
