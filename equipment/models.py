@@ -4,7 +4,7 @@ import datetime
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext as _
-from cms.models.pluginmodel import CMSPlugin
+# from cms.models.pluginmodel import CMSPlugin
 import uuid
 
 class Equipment(models.Model):
@@ -26,7 +26,7 @@ class Application(models.Model):
                 )
     STATUSES = [('%s' % ind, item) for ind, item in enumerate(statuses)]
     
-    name = models.CharField(max_length=300, defaul='', blank=True,
+    name = models.CharField(max_length=300, default='', blank=True,
                             verbose_name=_('заказчик'))
     organization = models.CharField(max_length=300, default='', blank=True,
                                     verbose_name=_('организация'))
@@ -36,7 +36,7 @@ class Application(models.Model):
                                verbose_name=_('дополнительно'))
     status = models.CharField(blank=True, verbose_name=_('статус'),
                               choices=STATUSES, max_length=1,
-                              defaul=STATUSES[0][0])
+                              default=STATUSES[0][0])
     equipment = models.ForeignKey(Equipment, null=True,
                                   blank=True,
                                   verbose_name=_('оборудование'))

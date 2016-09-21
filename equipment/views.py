@@ -1,9 +1,10 @@
+# coding: utf-8
 import gc
 
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.views.decorators.cache import never_cache
-from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.utils.translation import gettext as _
@@ -23,7 +24,10 @@ def request_rent(request):
     if request.method == 'GET':
         unum = request.GET.get('unum', '')
         pk = request.GET.get('pk', '')
-        obj = Application.objects.filter(unum=unum, id=pk)
+        if not pk:
+            obj = Application.objects.none()
+        else:
+            obj = Application.objects.filter(unum=unum, id=pk)
         if obj.exists():
             send_mail(app_created_theme.format(obj[0].created),
                       app_deleted % (obj[0].name, obj[0].equipment,
@@ -31,9 +35,12 @@ def request_rent(request):
                       'equipment@botsad.ru', [cmail], fail_silently=True)
             obj[0].delete()
             return HttpResponse('<h2>{}</h2>'.format(app_del_completed))
+        form = ApplicationForm()
+        result = render_to_string('equipment_form.html', {'form' : form},  context_instance=RequestContext(request))
+        return HttpResponse(result)
         
     if request.method == 'POST':
-        form = ApplicationForm(request)
+        form = ApplicationForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
             org = form.cleaned_data['organization']
@@ -62,10 +69,9 @@ def request_rent(request):
                                          ),
                           'equipment@botsad.ru', [application.email], fail_silently=True)
             except Equipment.DoesNotExists:
-                response_data.update({'error': _('Такого оборудования нет')})
+                response_data.update({'error': _(u'Такого оборудования нет')})
             response_data.update({'form' : form})
-        
-        result = render_to_string('equipment_form.html', context,  context_instance=RequestContext(request))
+        result = render_to_string('equipment_form.html', response_data,  context_instance=RequestContext(request))
         gc.collect()
         return HttpResponse(result, content_type='text/plain')
             
