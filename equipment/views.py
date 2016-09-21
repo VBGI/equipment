@@ -13,13 +13,11 @@ from .messages import *
 
 import re
 
-
-
 @never_cache
 @csrf_protect
-def register_user(request):
+def requestRent(request):
     response_data = {'error' : '', 'msg': ''}
-    
+
     if request.method == 'GET':
         unum = request.GET.get('unum', '')
         pk = request.GET.get('pk', '')
@@ -32,7 +30,12 @@ def register_user(request):
             obj[0].delete()
             return HttpResponse('<h2>{}</h2>'.format(app_del_completed))
         
-#     if request.method == 'POST':
+    if request.method == 'POST':
+        form = ApplicationForm(request)
+        if form.is_valid():
+            pass
+#             form.cleaned_data[]
+            
 #         timepk = request.POST.get('timepk', None)
 #         uname = request.POST.get('username', '')
 #         uphone = request.POST.get('phone', '') 
