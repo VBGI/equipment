@@ -50,8 +50,9 @@ def request_rent(request):
             equipment = form.cleaned_data['equipment']
             starttime = form.cleaned_data['starttime'] 
             endtime = form.cleaned_data['endtime'] 
+            print equipment
             try:
-                equip = Equipment.objects.get(pk=equipment)
+                equip = Equipment.objects.get(name__icontains=equipment)
                 application = Application.objects.create(name=name,
                                       organization=org,
                                       email=email,
@@ -61,19 +62,19 @@ def request_rent(request):
                                       endtime=endtime,
                                       equipment=equip
                                       )
-                send_mail(app_created_theme.format(application.created),
-                          app_created % (uname, application.equipment,
-                                         application.starttime,
-                                         application.endtime,
-                                         # TODO: Remove url by hash needed
-                                         ),
-                          'equipment@botsad.ru', [application.email], fail_silently=True)
-            except Equipment.DoesNotExists:
+#                 send_mail(app_created_theme.format(application.created),
+#                           app_created % (name, application.equipment.name,
+#                                          application.starttime,
+#                                          application.endtime,
+#                                          # TODO: Remove url by hash needed
+#                                          ),
+#                           'equipment@botsad.ru', [application.email], fail_silently=True)
+            except Equipment.DoesNotExist:
                 response_data.update({'error': _(u'Такого оборудования нет')})
-            response_data.update({'form' : form})
+        response_data.update({'form' : form})
         result = render_to_string('equipment_form.html', response_data,  context_instance=RequestContext(request))
         gc.collect()
-        return HttpResponse(result, content_type='text/plain')
+        return HttpResponse(result)
             
 
 # 
