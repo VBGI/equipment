@@ -1,29 +1,31 @@
-import json
+import gc
 
 from django.http import HttpResponse
+from django.template import RequestContext
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
+from django.utils.translation import gettext as _
+from django.template.loader import render_to_string
 
 from .forms import ApplicationForm
 
-from .models import Application
+from .models import Application, Equipment
 from .messages import *
 
-import re
 
 @never_cache
 @csrf_protect
-def requestRent(request):
-    response_data = {'error' : '', 'msg': ''}
+def request_rent(request):
+    response_data = {'error' : ''}
 
     if request.method == 'GET':
         unum = request.GET.get('unum', '')
         pk = request.GET.get('pk', '')
         obj = Application.objects.filter(unum=unum, id=pk)
         if obj.exists():
-            send_mail(app_created_theme.format(), # TODO: needs to be updated 
+            send_mail(app_created_theme.format(obj[0].created),
                       app_deleted % (obj[0].name, obj[0].equipment,
                                      obj[0].startdate, obj[0].enddate),
                       'equipment@botsad.ru', [cmail], fail_silently=True)
@@ -33,41 +35,40 @@ def requestRent(request):
     if request.method == 'POST':
         form = ApplicationForm(request)
         if form.is_valid():
-            pass
-#             form.cleaned_data[]
+            name = form.cleaned_data['name']
+            org = form.cleaned_data['organization']
+            email = form.cleaned_data['email']
+            phone = form.cleaned_data['phone']
+            content = form.cleaned_data['content']
+            equipment = form.cleaned_data['equipment']
+            starttime = form.cleaned_data['starttime'] 
+            endtime = form.cleaned_data['endtime'] 
+            try:
+                equip = Equipment.objects.get(pk=equipment)
+                application = Application.objects.create(name=name,
+                                      organization=org,
+                                      email=email,
+                                      phone=phone,
+                                      content=content,
+                                      starttime=starttime,
+                                      endtime=endtime,
+                                      equipment=equip
+                                      )
+                send_mail(app_created_theme.format(application.created),
+                          app_created % (uname, application.equipment,
+                                         application.starttime,
+                                         application.endtime,
+                                         # TODO: Remove url by hash needed
+                                         ),
+                          'equipment@botsad.ru', [application.email], fail_silently=True)
+            except Equipment.DoesNotExists:
+                response_data.update({'error': _('Такого оборудования нет')})
+            response_data.update({'form' : form})
+        
+        result = render_to_string('equipment_form.html', context,  context_instance=RequestContext(request))
+        gc.collect()
+        return HttpResponse(result, content_type='text/plain')
             
-#         timepk = request.POST.get('timepk', None)
-#         uname = request.POST.get('username', '')
-#         uphone = request.POST.get('phone', '') 
-#         umail = request.POST.get('email', '') 
-#         unum = request.POST.get('num', '')        
-#         err_msg = validate(uname, uphone)
-#         if not err_msg:
-#             try:
-#                 timeobj = ScheduleTimes.objects.get(id=timepk)
-#             except ScheduleTimes.DoesNotExist:
-#                 response_data.update({'error': 'Неправильно выбрано время'})
-#                 return HttpResponse(json.dumps(response_data), content_type="application/json")
-#             if timeobj.get_free_places <= 0:
-#                 response_data.update({'error': 'Выбранное время занято'})
-#                 return HttpResponse(json.dumps(response_data), content_type="application/json")
-#             try:
-#                 unum = int(unum)
-#                 umod = ScheduleModel.objects.create(username=uname,
-#                                                     phone=uphone,
-#                                                     email=umail,
-#                                                     num=unum,
-#                                                     time=timeobj)
-#                 hashurl = 'http://botsad.ru' + reverse('bgi-scheduler') + '?hashid=' + umod.hashid
-#                 send_mail(u'Регистрация на маршрут "Наука в путешествии. ПриМорье." (Ботанический сад, Владивосток)',
-#                           rec_created%(uname, str(umod.time.date.date), str(umod.time.time), hashurl),
-#                           'ecocenter@botsad.ru', [umod.email, 'ecocenter@botsad.ru'], fail_silently=True)
-#                 response_data.update({'msg': 'Вы успешно зарегистрировались'})
-#             except:
-#                 response_data.update({'error': 'Что-то пошло не так при регистрации'})
-#         else:
-#             response_data.update({'error':err_msg})
-#     else:
-#         response_data['error'] = 'Неправильный запрос'
+
 # 
-#     return HttpResponse(json.dumps(response_data), content_type="application/json")
+
