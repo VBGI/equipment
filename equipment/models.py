@@ -7,6 +7,7 @@ from django.utils.translation import gettext as _
 # from cms.models.pluginmodel import CMSPlugin
 import uuid
 
+
 class Equipment(models.Model):
     name = models.CharField(default='',
                             verbose_name=_('название оборудования'),
@@ -20,6 +21,7 @@ class Equipment(models.Model):
         verbose_name = _('оборудование')
         verbose_name_plural = _('оборудование')
         ordering = ('name',)
+
 
 class Application(models.Model):
     statuses = (_('Находится на рассмотрении'),

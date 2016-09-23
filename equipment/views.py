@@ -17,10 +17,7 @@ from .messages import *
 
 
 @never_cache
-@csrf_protect
-def request_rent(request):
-    response_data = {'error' : ''}
-
+def delete_rent_app(request):
     if request.method == 'GET':
         unum = request.GET.get('unum', '')
         pk = request.GET.get('pk', '')
@@ -35,12 +32,26 @@ def request_rent(request):
                       'equipment@botsad.ru', [cmail], fail_silently=True)
             obj[0].delete()
             return HttpResponse('<h2>{}</h2>'.format(app_del_completed))
-        form = ApplicationForm()
-        result = render_to_string('equipment_form.html', {'form' : form},  context_instance=RequestContext(request))
-        return HttpResponse(result)
+    return HttpResponse('<h2>{}</h2>'.format(_('Нечего выполнять')))
+
+
+
+def equipment_list(request):
+    objs = Application.objects.filter(status).order_by('starttime', 'endtime')
+    result = render_to_string('equipment-list.html',
+                              {'objs': objs},
+                              context_instance=RequestContext(request)
+                              )
+    return HttpResponse(result, content="text/plain")
+
         
+@never_cache
+@csrf_protect
+def request_rent(request):
+    response_data = {'error' : ''}
+
     if request.method == 'POST':
-        form = ApplicationForm(request.POST)
+        form = ApplicationForm(request.POST, prefix='equipment')
         if form.is_valid():
             name = form.cleaned_data['name']
             org = form.cleaned_data['organization']
@@ -84,6 +95,4 @@ def request_rent(request):
         gc.collect()
         return HttpResponse(result)
             
-
-# 
 
