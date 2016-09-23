@@ -12,13 +12,13 @@ class  ApplicationForm(ModelForm):
                   'content', 'equipment', 'starttime', 'endtime'
                   )
     
-    def clean_starttime(self):
-        data = self.cleaned_data['starttime']
-        equipment = self.cleaned_data['equipment']
-        if Application.objects.filter(starttime__gte=data,
-                                      endtime__lte=data,
-                                      status='3',
-                                      equipment=equipment
-                                      ).exists():
-            raise forms.ValidationError(_("Данное время уже занято"))
-        return data
+#     def clean_starttime(self):
+#         data = self.cleaned_data['starttime']
+#         equipment = self.cleaned_data['equipment']
+#         if Application.objects.filter(starttime__gte=data,
+#                                       endtime__lte=data,
+#                                       status='3',
+#                                       equipment=equipment
+#                                       ).exists():
+#             raise forms.ValidationError(_("Данное время уже занято"))
+#         return data

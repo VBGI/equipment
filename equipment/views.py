@@ -50,10 +50,18 @@ def request_rent(request):
             equipment = form.cleaned_data['equipment']
             starttime = form.cleaned_data['starttime'] 
             endtime = form.cleaned_data['endtime'] 
-            print equipment
             try:
                 equip = Equipment.objects.get(name__icontains=equipment)
-                application = Application.objects.create(name=name,
+                start_intersect = Application.objects.filter(starttime__lte=starttime,
+                                              endtime__gte=starttime,
+                                              equipment__pk=equip.pk).exclude(status='2').exists()
+                end_intersect = Application.objects.filter(starttime__lte=endtime,
+                                              endtime__gte=endtime,
+                                              equipment__pk=equip.pk).exclude(status='2').exists()
+                if start_intersect or end_intersect:
+                    response_data.update({'error': _('На данное время уже подана заявка')})
+                else:
+                    application = Application.objects.create(name=name,
                                       organization=org,
                                       email=email,
                                       phone=phone,
@@ -62,7 +70,7 @@ def request_rent(request):
                                       endtime=endtime,
                                       equipment=equip
                                       )
-#                 send_mail(app_created_theme.format(application.created),
+                    #  send_mail(app_created_theme.format(application.created),
 #                           app_created % (name, application.equipment.name,
 #                                          application.starttime,
 #                                          application.endtime,
