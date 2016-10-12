@@ -44,10 +44,10 @@ class Application(models.Model):
                               default=STATUSES[0][0])
     equipment = models.ForeignKey(Equipment, null=True,
                                   verbose_name=_('оборудование'))
-    starttime = models.DateTimeField(default=timezone.now(),
+    starttime = models.DateField(default=timezone.now(),
                                      verbose_name=_("Начало использования"),
                                      blank=True)
-    endtime = models.DateTimeField(default=timezone.now(),
+    endtime = models.DateField(default=timezone.now(),
                                    verbose_name=_("Окончание использования"),
                                    blank=True)
     created = models.DateTimeField(auto_now_add=True,

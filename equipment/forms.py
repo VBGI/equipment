@@ -4,8 +4,12 @@ from django.forms import ModelForm
 from .models import Application
 from django import forms
 from django.utils.translation import gettext as _
+from django.utils import timezone
+
+
 
 class  ApplicationForm(ModelForm):
+
     class Meta:
         model = Application
         fields = ('name', 'organization', 'email', 'phone', 

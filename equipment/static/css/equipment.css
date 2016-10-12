@@ -1,0 +1,37 @@
+
+
+#main-equipment-form{
+ }
+ 
+ 
+ #main-equipment-form * input, textarea, select{
+ display:block;
+ left: 20px;
+ position:relative; 
+ height: 2em;
+ font-size: 14pt;
+ }
+ 
+ #main-equipment-form * input {
+  min-width:200px!important;
+  max-width:99.9!important;
+  transition: width 0.25s;
+ }
+ 
+ #main-equipment-form * textarea {
+  min-height: 6em;
+  min-width: 200px;
+ }
+ 
+ 
+ #main-equipment-form * select {
+  height: 3em;
+  width: 200px; 
+  border-radius: 7px;
+ }
+ 
+ #equipment-form-wrapper {
+height: 6em;
+width: auto; 
+overflow: hidden;
+ }

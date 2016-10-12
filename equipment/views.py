@@ -61,6 +61,7 @@ def request_rent(request):
             equipment = form.cleaned_data['equipment']
             starttime = form.cleaned_data['starttime'] 
             endtime = form.cleaned_data['endtime'] 
+            print starttime, endtime
             try:
                 equip = Equipment.objects.get(name__icontains=equipment)
                 start_intersect = Application.objects.filter(starttime__lte=starttime,

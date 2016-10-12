@@ -1,5 +1,8 @@
-<form method="post">
+
+<div id="equipment-form-wrapper">
+<form id="main-equipment-form" method="post" action="{%url 'equipment-app'%}">
 {%csrf_token%}
 {{form.as_p}}
 <input type="submit" value="Submit">
 </form>
+</div>
