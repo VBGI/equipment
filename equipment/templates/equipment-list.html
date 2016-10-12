@@ -1,7 +1,4 @@
-
-
 <table id="equipment-list">
-
   <thead>
     <tr> 
     	<th>№</th>
@@ -12,7 +9,6 @@
   </thead>
   <tbody>
   {%for item in objs %}
-   
    {% if forloop.counter|divisibleby:2 %}
    	<tr class="quipment-list-even-row">
      <td>{{forloop.counter}}</td>
