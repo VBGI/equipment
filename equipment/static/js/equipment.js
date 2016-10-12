@@ -9,13 +9,18 @@ $( "#main-equipment-form input[name*=time]" ).datepicker( "setDate", startdate);
 
 $( "#main-equipment-form" ).submit(function( ev ) {
 	
-	
-	
   alert( "Handler for .submit() called." );
   ev.preventDefault();
 });
 
 });
+
+
+function showEquipmentList(){
+
+$("#equipment-list-wrapper").load("{%url ""%}");
+
+}
 
 
 function resizable (el, factor) {
