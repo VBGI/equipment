@@ -3,7 +3,101 @@
 {%addtoblock "js"%}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script src="{%static 'js/equipment.js'%}"></script> 
+
+<script type="text/javascript">
+
+var equipmentFormStatus=false;
+
+
+
+$(document).ready(function () {
+var startdate = $("#main-equipment-form input[name*=starttime]").val();
+$("#main-equipment-form input[name*=time]").datepicker();
+$("#main-equipment-form input[name*=time]").datepicker("option", "dateFormat", 'yy-mm-dd');
+$( "#main-equipment-form input[name*=time]" ).datepicker( "setDate", startdate);
+
+$( "#main-equipment-form" ).submit(function(ev) {
+ev.preventDefault();	
+var formData = $('#main-equipment-form').serialize();
+$.ajax({
+          type: 'POST',
+          url: '{%url "equipment-app"%}',
+          data: formData,
+          success: function(data) {
+          
+            $('#equipment-form-wrapper').html(data);
+            $.each($("#main-equipment-form input[type!=submit]"), function(ind, obj){
+					resizable(obj, 15);
+										});
+			showAllFields();
+          },
+          error:  function(xhr, str){
+	    	     alert('Возникла ошибка: ' + xhr.responseCode);
+          }
+        });
+  
+
+  
+});
+
+
+showEquipmentList();
+});
+
+
+function showEquipmentList(){
+$("#equipment-list-wrapper").load("{%url "equipment-list"%}");
+}
+
+
+function showAllFields(){
+$("#equipment-form-wrapper p").each(function(ind, obj){
+   $(obj).css('display','inline'); }); 
+}
+
+function hideAllFields(){
+$("#equipment-form-wrapper p").each(function(ind, obj){
+	if (ind >= 1) {
+   	$(obj).css('display','none'); }
+   
+    });
+    
+}
+
+
+
+function resizable (el, factor) {
+  var smint = Number(factor) || 8;
+  function resize() {
+  	var cval = $("#main-equipment-form input[id*=name]").val();
+  	var cwid = $(el).width();
+	if ((el.value.length + 1) * smint < 500){
+		el.style.width = (el.value.length + 1) * smint + 'px';	
+	}
+  $('#equipment-form-error').hide();
+ if (!equipmentFormStatus&(cval.length > 2)) {
+  showAllFields()
+  equipmentFormStatus=true;
+  };
+
+if (equipmentFormStatus & cval.length<=2){
+  hideAllFields();
+  equipmentFormStatus=false;
+
+ } 
+  
+}
+  	
+  var e = 'keypress, change'.split(',');
+  for (var i in e) el.addEventListener(e[i], resize, false);
+  resize();
+}
+
+$.each($("#main-equipment-form input[type!=submit]"), function(ind, obj){
+	resizable(obj, 15);
+});
+</script>
+
 {%endaddtoblock%}
 
 {%addtoblock "css"%}
@@ -11,7 +105,11 @@
 <link rel="stylesheet" href="{%static "css/equipment.css"%}">
 {%endaddtoblock%}
 
-
+<div id="equipment-form-wrapper">
 {% include "equipment-form.html" %}
+</div>
+
 
 <div id="equipment-list-wrapper"></div>
+
+

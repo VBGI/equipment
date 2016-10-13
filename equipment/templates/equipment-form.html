@@ -1,8 +1,21 @@
+{%load i18n%}
 
-<div id="equipment-form-wrapper">
+{%if error == 'new' %}
 <form id="main-equipment-form" method="post" action="{%url 'equipment-app'%}">
-{%csrf_token%}
 {{form.as_p}}
-<input type="submit" value="Submit">
+<input type="submit" value="{%trans "Отправить"%}">
+{%csrf_token%}
 </form>
-</div>
+{%elif error %}
+<form id="main-equipment-form" method="post" action="{%url 'equipment-app'%}">
+{{form.as_p}}
+<div id="equipment-form-error">{{error}}</div>
+<input type="submit" value="{%trans "Отправить"%}">
+{%csrf_token%}
+</form>
+{%else%}
+<div id="equipment-booked-successfully">{%trans "Заявка на аренду оборудования успешно подана."%}</div>
+<div id="equipment-renew-page" onclick="location.reload();">{%trans "Обновить страницу"%}</div>
+{%endif%} 
+
+

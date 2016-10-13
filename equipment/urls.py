@@ -1,6 +1,7 @@
 from django.conf.urls import *
-from equipment.views import request_rent
+from equipment.views import request_rent, equipment_list
 
 urlpatterns = patterns('',
-   url(r'^', request_rent, name="equipment-app")
+   url(r'^$', request_rent, name="equipment-app"),
+   url(r'^show$', equipment_list, name="equipment-list")
 )

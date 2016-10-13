@@ -12,7 +12,8 @@ class EquipmentPlugin(CMSPluginBase):
     name = _(u"Форма заказа оборудования")
     render_template="equipment-plugin.html"
     def render(self, context, instance, placeholder):
-        context.update({'form': ApplicationForm(prefix='equipment')})
+        context.update({'form': ApplicationForm(prefix='equipment'),
+                        'error': 'new'})
         return context
 
 

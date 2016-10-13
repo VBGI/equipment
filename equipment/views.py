@@ -37,12 +37,13 @@ def delete_rent_app(request):
 
 
 def equipment_list(request):
-    objs = Application.objects.filter(status).order_by('starttime', 'endtime')
+    objs = Application.objects.all().exclude(status=2).order_by('starttime',
+                                                                'endtime')
     result = render_to_string('equipment-list.html',
                               {'objs': objs},
                               context_instance=RequestContext(request)
                               )
-    return HttpResponse(result, content="text/plain")
+    return HttpResponse(result, content_type="text/plain")
 
         
 @never_cache
@@ -61,7 +62,6 @@ def request_rent(request):
             equipment = form.cleaned_data['equipment']
             starttime = form.cleaned_data['starttime'] 
             endtime = form.cleaned_data['endtime'] 
-            print starttime, endtime
             try:
                 equip = Equipment.objects.get(name__icontains=equipment)
                 start_intersect = Application.objects.filter(starttime__lte=starttime,
@@ -91,9 +91,13 @@ def request_rent(request):
 #                           'equipment@botsad.ru', [application.email], fail_silently=True)
             except Equipment.DoesNotExist:
                 response_data.update({'error': _(u'Такого оборудования нет')})
+            
+        else:
+            response_data.update({'error': _(u'Ошибка при заполнении полей формы')})
+
         response_data.update({'form' : form})
-        result = render_to_string('equipment_form.html', response_data,  context_instance=RequestContext(request))
+        result = render_to_string('equipment-form.html', response_data,  context_instance=RequestContext(request))
         gc.collect()
-        return HttpResponse(result)
+        return HttpResponse(result, content_type="text/plain")
             
 

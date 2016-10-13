@@ -5,6 +5,7 @@
     	<th>Оборудование</th>
     	<th>Заказчик</th>
     	<th>Даты</th>
+    	<th>Статус</th>
     </tr>
   </thead>
   <tbody>
@@ -15,13 +16,15 @@
      <td>{{item.name}}</td>
      <td>{{item.organizaiton}}</td>
      <td>{{item.starttime}}-{{item.endtime}}</td>
+     <td>{{item.get_status_display}}</td>
    	</tr>
     {% else %}
-   	<tr class="quipment-list-even-row">
+   	<tr class="quipment-list-odd-row">
      <td>{{forloop.counter}}</td>
      <td>{{item.name}}</td>
      <td>{{item.organizaiton}}</td>
      <td>{{item.starttime}}-{{item.endtime}}</td>
+     <td>{{item.get_status_display}}</td>
    	</tr>
     {% endif %}
    {%endfor%}

@@ -1,8 +1,11 @@
 
+#main-equipment-form > p:first-child{
+display: block;
+} 
 
-#main-equipment-form{
- }
- 
+#main-equipment-form > p:not(:first-child){
+display: none;
+}
  
  #main-equipment-form * input, textarea, select{
  display:block;
@@ -18,20 +21,71 @@
   transition: width 0.25s;
  }
  
+ #main-equipment-form * input:focus, textarea:focus {
+  background-color: #BBE2BC;
+ }
+ 
+ 
  #main-equipment-form * textarea {
   min-height: 6em;
   min-width: 200px;
  }
+
+#main-equipment-form input[type=submit] {
+width: 250px;
+height: 40px;
+font-size: 14pt;
+margin-top: 5px;
+}
  
  
- #main-equipment-form * select {
+#main-equipment-form * select {
   height: 3em;
   width: 200px; 
   border-radius: 7px;
  }
  
- #equipment-form-wrapper {
+#equipment-form-wrapper {
+padding-top: 10px;
 height: 6em;
 width: auto; 
 overflow: hidden;
+display: inline;
  }
+ 
+ 
+ #equipment-list th, td {
+text-align: left;
+padding: 3px 5px 3px;
+ }
+
+#equipment-list tr.quipment-list-even-row {
+background-color: #D8F1D3;
+ } 
+
+#equipment-list thead tr {
+background-color: #BAD696; 
+}
+ 
+ 
+ 
+#equipment-list tr.quipment-list-odd-row {
+background-color: #BBE2BC;
+ } 
+ 
+
+#equipment-list tr:hover {
+opacity: 0.3
+ }
+ 
+ #equipment-renew-page {
+width: 100px;
+height: 30px;
+background-color: magenta;
+}
+
+ #equipment-renew-page:hover{
+cursor:pointer; 
+ }
+ 
+ 
