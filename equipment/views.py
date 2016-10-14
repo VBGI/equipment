@@ -9,6 +9,7 @@ from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.utils.translation import gettext as _
 from django.template.loader import render_to_string
+from django.utils import timezone
 
 from django.contrib.sites.models import Site
 
@@ -32,19 +33,24 @@ def delete_rent_app(request):
         else:
             obj = Application.objects.filter(unum=unum, id=pk)
         if obj.exists():
+            print obj[0].startdate, obj[0].enddate
             send_mail(app_created_theme.format(obj[0].created),
-                      app_deleted % (obj[0].name, obj[0].equipment,
-                                     obj[0].startdate, obj[0].enddate),
-                      'equipment@botsad.ru', [cmail], fail_silently=True)
+                      app_deleted.format(obj[0].name,
+                                     obj[0].equipment.name,
+                                     obj[0].startdate,
+                                     obj[0].enddate
+                                     ),
+                      'equipment@botsad.ru', [obj[0].email], fail_silently=True)
             obj[0].delete()
-            return HttpResponse('<h2>{}</h2>'.format(app_del_completed))
-    return HttpResponse('<h2>{}</h2>'.format(_('Нечего выполнять')))
+            return HttpResponse(u'<h2>{}</h2>'.format(app_del_completed))
+    return HttpResponse(u'<h2>{}</h2>'.format(_(u'Нечего выполнять')))
 
 
 
 def equipment_list(request):
-    objs = Application.objects.all().exclude(status=2).order_by('-created', 'startdate',
-                                                                'enddate')
+    objs = Application.objects.filter(enddate__gte=timezone.now).exclude(status=2).order_by('-created',
+                                                                                            'startdate',
+                                                                                            'enddate')
     result = render_to_string('equipment-list.html',
                               {'objs': objs},
                               context_instance=RequestContext(request)
@@ -89,7 +95,7 @@ def request_rent(request):
                                       equipment=equip
                                       )
                     send_mail(app_created_theme.format(application.created),
-                              app_created % (name, application.equipment.name,
+                              app_created.format(name, application.equipment.name,
                                           application.startdate,
                                           application.enddate,
                                           'http://' +\
