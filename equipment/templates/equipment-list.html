@@ -4,6 +4,7 @@
     	<th>№</th>
     	<th>Оборудование</th>
     	<th>Заказчик</th>
+    	<th>Организация</th>
     	<th>Даты</th>
     	<th>Статус</th>
     </tr>
@@ -13,17 +14,19 @@
    {% if forloop.counter|divisibleby:2 %}
    	<tr class="quipment-list-even-row">
      <td>{{forloop.counter}}</td>
+     <td>{{item.equipment.name}}</td>
      <td>{{item.name}}</td>
      <td>{{item.organizaiton}}</td>
-     <td>{{item.starttime}}-{{item.endtime}}</td>
+     <td>{{item.startdate}}-{{item.enddate}}</td>
      <td>{{item.get_status_display}}</td>
    	</tr>
     {% else %}
    	<tr class="quipment-list-odd-row">
      <td>{{forloop.counter}}</td>
+     <td>{{item.equipment.name}}</td>
      <td>{{item.name}}</td>
      <td>{{item.organizaiton}}</td>
-     <td>{{item.starttime}}-{{item.endtime}}</td>
+     <td>{{item.startdate}}-{{item.enddate}}</td>
      <td>{{item.get_status_display}}</td>
    	</tr>
     {% endif %}

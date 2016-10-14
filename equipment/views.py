@@ -10,6 +10,12 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import gettext as _
 from django.template.loader import render_to_string
 
+from django.contrib.sites.models import Site
+
+current_site = Site.objects.get_current()
+
+
+
 from .forms import ApplicationForm
 
 from .models import Application, Equipment
@@ -37,8 +43,8 @@ def delete_rent_app(request):
 
 
 def equipment_list(request):
-    objs = Application.objects.all().exclude(status=2).order_by('-created', 'starttime',
-                                                                'endtime')
+    objs = Application.objects.all().exclude(status=2).order_by('-created', 'startdate',
+                                                                'enddate')
     result = render_to_string('equipment-list.html',
                               {'objs': objs},
                               context_instance=RequestContext(request)
@@ -60,15 +66,15 @@ def request_rent(request):
             phone = form.cleaned_data['phone']
             content = form.cleaned_data['content']
             equipment = form.cleaned_data['equipment']
-            starttime = form.cleaned_data['starttime'] 
-            endtime = form.cleaned_data['endtime'] 
+            startdate = form.cleaned_data['startdate'] 
+            enddate = form.cleaned_data['enddate'] 
             try:
                 equip = Equipment.objects.get(name__icontains=equipment)
-                start_intersect = Application.objects.filter(starttime__lte=starttime,
-                                              endtime__gte=starttime,
+                start_intersect = Application.objects.filter(starttime__lte=startdate,
+                                              endtime__gte=startdate,
                                               equipment__pk=equip.pk).exclude(status='2').exists()
-                end_intersect = Application.objects.filter(starttime__lte=endtime,
-                                              endtime__gte=endtime,
+                end_intersect = Application.objects.filter(starttime__lte=enddate,
+                                              endtime__gte=enddate,
                                               equipment__pk=equip.pk).exclude(status='2').exists()
                 if start_intersect or end_intersect:
                     response_data.update({'error': _('На данное время уже подана заявка')})
@@ -78,10 +84,12 @@ def request_rent(request):
                                       email=email,
                                       phone=phone,
                                       content=content,
-                                      starttime=starttime,
-                                      endtime=endtime,
+                                      startdate=startdate,
+                                      enddate=enddate,
                                       equipment=equip
                                       )
+                    
+                    print 'http://' + current_site.domain + reverse('delete_rent_app') + '?unum={}&pk={}'.format(application.unum, application.pk)
 #                  send_mail(app_created_theme.format(application.created),
 #                           app_created % (name, application.equipment.name,
 #                                          application.starttime,
