@@ -13,8 +13,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     def save_model(self, *args): 
         request, obj, form, change = args
         if change:
-            if form.cleaned_data['status'] not in obj.mailsend:
-                send_mail(app_status_theme.format(obj.created),
+            send_mail(app_status_theme.format(obj.created),
                           app_status.format(obj.name,
                                             obj.created,
                                             obj.get_status_display()
