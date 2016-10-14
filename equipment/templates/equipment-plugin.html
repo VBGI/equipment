@@ -18,13 +18,14 @@ $('#main-equipment-form').each(function(){
 function initEquipmentForm(){
 var startdate = $("#main-equipment-form input[name*=startdate]").val();
 var enddate = $("#main-equipment-form input[name*=enddate]").val();
-
-$("#main-equipment-form input[name*=startdate]").datepicker();
-$("#main-equipment-form input[name*=enddate]").datepicker();
-$("#main-equipment-form input[name*=enddate]").datepicker("option", "dateFormat", 'yy-mm-dd');
-$("#main-equipment-form input[name*=startdate]").datepicker("option", "dateFormat", 'yy-mm-dd');
-$("#main-equipment-form input[name*=startdate]" ).datepicker( "setDate", startdate);
-$("#main-equipment-form input[name*=enddate]" ).datepicker( "setDate", enddate);
+$("#main-equipment-form input[name*=enddate]").datepicker({dateFormat: 'yy-mm-dd',
+														   minDate: 0, 
+														   maxDate: "+1Y",
+														   setDate: enddate});
+$("#main-equipment-form input[name*=startdate]").datepicker({dateFormat: 'yy-mm-dd',
+														    minDate: 0, 
+														    maxDate: "+1Y", 
+														    setDate: startdate});
 $("#main-equipment-form" ).submit(function(ev) {
 ev.preventDefault();	
 var formData = $('#main-equipment-form').serialize();
