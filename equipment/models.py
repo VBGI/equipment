@@ -63,5 +63,5 @@ class Application(models.Model):
     class Meta:
         verbose_name = _('заявка')
         verbose_name_plural = _('заявки')
-        ordering = ('equipment', 'status', 'organization', 'created', 'starttime')
+        ordering = ('equipment', 'status', 'organization', 'created', 'startdate')
         

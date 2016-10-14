@@ -14,7 +14,7 @@ class  ApplicationForm(ModelForm):
     class Meta:
         model = Application
         fields = ('name', 'organization', 'email', 'phone', 
-                  'content', 'equipment', 'starttime', 'endtime'
+                  'content', 'equipment', 'startdate', 'enddate'
                   )
     
 #     def clean_starttime(self):

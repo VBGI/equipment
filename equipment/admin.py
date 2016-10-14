@@ -6,8 +6,8 @@ from .models import Equipment, Application
 
 
 class ApplicationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'organization', 'starttime', 'endtime')
-    list_filter = ('status', 'equipment', 'starttime', 'endtime', 'created')
+    list_display = ('name', 'organization', 'startdate', 'enddate')
+    list_filter = ('status', 'equipment', 'startdate', 'enddate', 'created')
     readonly_fields = ('unum',)
 
 class EquipmentAdmin(admin.ModelAdmin):
