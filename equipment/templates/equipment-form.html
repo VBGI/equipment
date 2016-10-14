@@ -15,7 +15,7 @@
 </form>
 {%else%}
 <div id="equipment-booked-successfully">{%trans "Заявка на аренду оборудования успешно подана."%}</div>
-<div id="equipment-renew-page" onclick="location.reload();">{%trans "Обновить страницу"%}</div>
+<div id="equipment-renew-page" onclick="window.location.reload();resetEquipmentForm();">{%trans "Обновить страницу"%}</div>
 {%endif%} 
 
 
