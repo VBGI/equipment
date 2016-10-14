@@ -9,7 +9,8 @@ from django.utils import timezone
 
 
 class  ApplicationForm(ModelForm):
-
+    required_css_class = 'required'
+        
     class Meta:
         model = Application
         fields = ('name', 'organization', 'email', 'phone', 
