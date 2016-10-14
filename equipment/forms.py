@@ -16,14 +16,10 @@ class  ApplicationForm(ModelForm):
         fields = ('name', 'organization', 'email', 'phone', 
                   'content', 'equipment', 'startdate', 'enddate'
                   )
-    
-#     def clean_starttime(self):
-#         data = self.cleaned_data['starttime']
-#         equipment = self.cleaned_data['equipment']
-#         if Application.objects.filter(starttime__gte=data,
-#                                       endtime__lte=data,
-#                                       status='3',
-#                                       equipment=equipment
-#                                       ).exists():
-#             raise forms.ValidationError(_("Данное время уже занято"))
-#         return data
+
+    def clean_enddate(self):
+        end = self.cleaned_data['enddate']
+        start = self.cleaned_data['startdate']
+        if end < start:
+            raise forms.ValidationError(_("Дата окончания аренды должна быть больше даты  ее начала"))
+        return data
