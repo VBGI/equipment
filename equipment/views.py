@@ -37,7 +37,7 @@ def delete_rent_app(request):
 
 
 def equipment_list(request):
-    objs = Application.objects.all().exclude(status=2).order_by('starttime',
+    objs = Application.objects.all().exclude(status=2).order_by('-created', 'starttime',
                                                                 'endtime')
     result = render_to_string('equipment-list.html',
                               {'objs': objs},
