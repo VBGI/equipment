@@ -82,7 +82,7 @@ def request_rent(request):
                                       endtime=endtime,
                                       equipment=equip
                                       )
-                    #  send_mail(app_created_theme.format(application.created),
+#                  send_mail(app_created_theme.format(application.created),
 #                           app_created % (name, application.equipment.name,
 #                                          application.starttime,
 #                                          application.endtime,
