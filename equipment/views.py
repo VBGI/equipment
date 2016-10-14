@@ -70,11 +70,11 @@ def request_rent(request):
             enddate = form.cleaned_data['enddate'] 
             try:
                 equip = Equipment.objects.get(name__icontains=equipment)
-                start_intersect = Application.objects.filter(starttime__lte=startdate,
-                                              endtime__gte=startdate,
+                start_intersect = Application.objects.filter(startdate__lte=startdate,
+                                              enddate__gte=startdate,
                                               equipment__pk=equip.pk).exclude(status='2').exists()
-                end_intersect = Application.objects.filter(starttime__lte=enddate,
-                                              endtime__gte=enddate,
+                end_intersect = Application.objects.filter(startdate__lte=enddate,
+                                              enddate__gte=enddate,
                                               equipment__pk=equip.pk).exclude(status='2').exists()
                 if start_intersect or end_intersect:
                     response_data.update({'error': _('На данное время уже подана заявка')})

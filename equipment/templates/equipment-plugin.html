@@ -19,8 +19,10 @@ function initEquipmentForm(){
 var startdate = $("#main-equipment-form input[name*=startdate]").val();
 var enddate = $("#main-equipment-form input[name*=enddate]").val();
 
-$("#main-equipment-form input[name*=time]").datepicker();
-$("#main-equipment-form input[name*=time]").datepicker("option", "dateFormat", 'yy-mm-dd');
+$("#main-equipment-form input[name*=startdate]").datepicker();
+$("#main-equipment-form input[name*=enddate]").datepicker();
+$("#main-equipment-form input[name*=enddate]").datepicker("option", "dateFormat", 'yy-mm-dd');
+$("#main-equipment-form input[name*=startdate]").datepicker("option", "dateFormat", 'yy-mm-dd');
 $("#main-equipment-form input[name*=startdate]" ).datepicker( "setDate", startdate);
 $("#main-equipment-form input[name*=enddate]" ).datepicker( "setDate", enddate);
 $("#main-equipment-form" ).submit(function(ev) {
