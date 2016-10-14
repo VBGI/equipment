@@ -88,15 +88,18 @@ def request_rent(request):
                                       enddate=enddate,
                                       equipment=equip
                                       )
-                    
-                    print 'http://' + current_site.domain + reverse('delete_rent_app') + '?unum={}&pk={}'.format(application.unum, application.pk)
-#                  send_mail(app_created_theme.format(application.created),
-#                           app_created % (name, application.equipment.name,
-#                                          application.starttime,
-#                                          application.endtime,
-#                                          # TODO: Remove url by hash needed
-#                                          ),
-#                           'equipment@botsad.ru', [application.email], fail_silently=True)
+                    send_mail(app_created_theme.format(application.created),
+                              app_created % (name, application.equipment.name,
+                                          application.startdate,
+                                          application.enddate,
+                                          'http://' +\
+                                          current_site.domain +\
+                                          reverse('delete_rent_app') +\
+                                          '?unum={}&pk={}'.format(application.unum,
+                                                                  application.pk)
+                                          ),
+                           'equipment@botsad.ru', [application.email], fail_silently=True)
+
             except Equipment.DoesNotExist:
                 response_data.update({'error': _(u'Такого оборудования нет')})
             
