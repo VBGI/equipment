@@ -53,10 +53,12 @@ overflow: hidden;
 display: inline;
  }
  
+
  
- #equipment-list th, td {
+#equipment-list th, td {
 text-align: left;
 padding: 3px 5px 3px;
+border-radius: 5px;
  }
 
 #equipment-list tr.quipment-list-even-row {
@@ -78,14 +80,39 @@ background-color: #BBE2BC;
 opacity: 0.3
  }
  
- #equipment-renew-page {
-width: 100px;
-height: 30px;
-background-color: magenta;
+#equipment-renew-page {
+background-color: #EEEEEE;
+padding: 10px;
+width: 200px;
+border-radius: 10px;
+text-align:center;
 }
+
+#equipment-renew-page:hover {
+background-color: #AAAAAA;
+}
+
 
  #equipment-renew-page:hover{
 cursor:pointer; 
  }
- 
+
+#equipment-form-error{
+color: red;
+font-weight: bold;
+font-size: 14pt;
+}
+
+p.required:before { content: '* '; color: red; }
+
+ul.errorlist{
+list-style-type:  none;
+color:red;
+
+} 
+
+#equipment-booked-successfully {
+font-size: 14pt;
+margin: 5px;
+}
  
