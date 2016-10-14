@@ -22,4 +22,4 @@ class  ApplicationForm(ModelForm):
         start = self.cleaned_data['startdate']
         if end < start:
             raise forms.ValidationError(_("Дата окончания аренды должна быть больше даты  ее начала"))
-        return data
+        return end
