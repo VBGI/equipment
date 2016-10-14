@@ -9,14 +9,21 @@
 var equipmentFormStatus=false;
 
 
+function resetEquipmentForm(){
+$('#main-equipment-form').each(function(){
+    this.reset();
+});
+}
 
-$(document).ready(function () {
+function initEquipmentForm(){
 var startdate = $("#main-equipment-form input[name*=starttime]").val();
+var enddate = $("#main-equipment-form input[name*=endtime]").val();
+
 $("#main-equipment-form input[name*=time]").datepicker();
 $("#main-equipment-form input[name*=time]").datepicker("option", "dateFormat", 'yy-mm-dd');
-$( "#main-equipment-form input[name*=time]" ).datepicker( "setDate", startdate);
-
-$( "#main-equipment-form" ).submit(function(ev) {
+$("#main-equipment-form input[name*=starttime]" ).datepicker( "setDate", startdate);
+$("#main-equipment-form input[name*=endtime]" ).datepicker( "setDate", enddate);
+$("#main-equipment-form" ).submit(function(ev) {
 ev.preventDefault();	
 var formData = $('#main-equipment-form').serialize();
 $.ajax({
@@ -29,6 +36,7 @@ $.ajax({
             $.each($("#main-equipment-form input[type!=submit]"), function(ind, obj){
 					resizable(obj, 15);
 										});
+			initEquipmentForm();
 			showAllFields();
           },
           error:  function(xhr, str){
@@ -40,7 +48,13 @@ $.ajax({
   
 });
 
+}
 
+
+$(document).ready(function () {
+resetEquipmentForm();
+hideAllFields();
+initEquipmentForm();
 showEquipmentList();
 });
 
@@ -59,9 +73,7 @@ function hideAllFields(){
 $("#equipment-form-wrapper p").each(function(ind, obj){
 	if (ind >= 1) {
    	$(obj).css('display','none'); }
-   
     });
-    
 }
 
 
@@ -74,7 +86,6 @@ function resizable (el, factor) {
 	if ((el.value.length + 1) * smint < 500){
 		el.style.width = (el.value.length + 1) * smint + 'px';	
 	}
-  $('#equipment-form-error').hide();
  if (!equipmentFormStatus&(cval.length > 2)) {
   showAllFields()
   equipmentFormStatus=true;
