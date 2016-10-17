@@ -1,5 +1,5 @@
 from django.conf.urls import *
-from equipment.views import (request_rent, equipment_list,
+from bgi.equipment.views import (request_rent, equipment_list,
                             delete_rent_app)
 
 urlpatterns = patterns('',

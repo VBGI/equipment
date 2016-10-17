@@ -46,9 +46,9 @@ def delete_rent_app(request):
     return HttpResponse(u'<h2>{}</h2>'.format(_(u'Нечего выполнять')))
 
 
-
+@never_cache
 def equipment_list(request):
-    objs = Application.objects.filter(enddate__gte=timezone.now).exclude(status=2).order_by('-created',
+    objs = Application.objects.filter(enddate__gte=timezone.now()).exclude(status=2).order_by('-created',
                                                                                             'startdate',
                                                                                             'enddate')
     result = render_to_string('equipment-list.html',
