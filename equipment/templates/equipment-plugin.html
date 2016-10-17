@@ -1,8 +1,11 @@
 {%load cms_tags sekizai_tags staticfiles%}
 
 {%addtoblock "js"%}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/i18n/jquery-ui-i18n.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/i18n/ui.datepicker-ru.js"></script>
+
+
 
 <script type="text/javascript">
 
@@ -116,7 +119,6 @@ $.each($("#main-equipment-form p input[type!=submit]"), function(ind, obj){
 
 {%addtoblock "css"%}
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-<link rel="stylesheet" href="{%static "css/equipment.css"%}">
 {%endaddtoblock%}
 
 <div id="equipment-form-wrapper">

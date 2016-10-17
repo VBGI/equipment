@@ -1,4 +1,6 @@
+{%load i18n%}
 {%if objs%}
+<h3>{%trans "Перечень поступивших заявок"%}</h3>
 <table id="equipment-list">
   <thead>
     <tr> 
@@ -34,4 +36,6 @@
    {%endfor%}
   </tbody>
 </table>
+{%else%}
+<h4>{%trans "Список пуст"%}</h4>
 {%endif%}
