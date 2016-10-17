@@ -10,12 +10,13 @@ from captcha.fields import ReCaptchaField
 
 class  ApplicationForm(ModelForm):
     required_css_class = 'required'
-    captcha = ReCaptchaField(attrs={'lang':'ru'})
+    captcha = ReCaptchaField(attrs={'lang': 'ru'})
         
     class Meta:
         model = Application
         fields = ('name', 'organization', 'email', 'phone', 
-                  'content', 'equipment', 'startdate', 'enddate'
+                  'content', 'equipment', 'startdate', 'enddate',
+                  'captacha'
                   )
 
     def clean_enddate(self):
