@@ -7,7 +7,7 @@ display: block;
 display: none;
 }
  
- #main-equipment-form * input, textarea, select{
+ #main-equipment-form p input, textarea, select{
  display:block;
  left: 20px;
  position:relative; 
@@ -15,13 +15,13 @@ display: none;
  font-size: 14pt;
  }
  
- #main-equipment-form * input {
+ #main-equipment-form p input {
   min-width:200px!important;
   max-width:99.9!important;
   transition: width 0.25s;
  }
  
- #main-equipment-form * input:focus, textarea:focus {
+ #main-equipment-form p input:focus, textarea:focus {
   background-color: #BBE2BC;
  }
  

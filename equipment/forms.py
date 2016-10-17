@@ -5,10 +5,11 @@ from .models import Application
 from django import forms
 from django.utils.translation import gettext as _
 from django.utils import timezone
-
+from captcha.fields import ReCaptchaField
 
 class  ApplicationForm(ModelForm):
     required_css_class = 'required'
+    captcha = ReCaptchaField(attrs={'lang': 'ru'})
         
     class Meta:
         model = Application
