@@ -1,7 +1,7 @@
 {%load i18n%}
 
 {%if error == 'new' %}
-<script type="text/javascript" src="//www.google.com/recaptcha/api/js/recaptcha_ajax.js" async defer></script>
+<script type="text/javascript" src="//www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
 <form id="main-equipment-form" method="post" action="{%url 'equipment-app'%}">
 {{form.as_p}}
 {{form.captcha}}
@@ -9,7 +9,7 @@
 {%csrf_token%}
 </form>
 {%elif error %}
-<script type="text/javascript" src="//www.google.com/recaptcha/api/js/recaptcha_ajax.js" async defer></script>
+<script type="text/javascript" src="//www.google.com/recaptcha/api/js/recaptcha_ajax.js" ></script>
 <form id="main-equipment-form" method="post" action="{%url 'equipment-app'%}">
 {{form.as_p}}
 {{form.captcha}}
