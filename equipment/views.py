@@ -104,7 +104,7 @@ def request_rent(request):
                                           '?unum={}&pk={}'.format(application.unum,
                                                                   application.pk)
                                           ),
-                           'equipment@botsad.ru', [application.email], fail_silently=True)
+                           'equipment@botsad.ru', [application.email, 'equipment@botsad.ru'], fail_silently=True)
 
             except Equipment.DoesNotExist:
                 response_data.update({'error': _(u'Такого оборудования нет')})
