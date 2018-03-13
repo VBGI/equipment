@@ -13,8 +13,8 @@ class EquipmentPlugin(CMSPluginBase):
     render_template="equipment-plugin.html"
     def render(self, context, instance, placeholder):
         context.update({'form': ApplicationForm(prefix='equipment'),
-                        'error': 'new'})
+                        'error': ' '})
         return context
 
 
-plugin_pool.register_plugin(EquipmentPlugin)    
+plugin_pool.register_plugin(EquipmentPlugin)
