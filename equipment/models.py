@@ -13,7 +13,7 @@ class Equipment(models.Model):
                             verbose_name=_('название оборудования'),
                             unique=True,
                             max_length=255)
-    
+
     def __unicode__(self):
         return self.name
 
@@ -30,7 +30,7 @@ class Application(models.Model):
                 _('Принята'),
                 )
     STATUSES = [('%s' % ind, item) for ind, item in enumerate(statuses)]
-    
+
     name = models.CharField(max_length=300, default='', verbose_name=_('заказчик'))
     organization = models.CharField(max_length=300, default='', blank=True,
                                     verbose_name=_('организация'))
@@ -64,4 +64,3 @@ class Application(models.Model):
         verbose_name = _('заявка')
         verbose_name_plural = _('заявки')
         ordering = ('equipment', 'status', 'organization', 'created', 'startdate')
-        

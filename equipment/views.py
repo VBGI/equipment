@@ -48,16 +48,16 @@ def delete_rent_app(request):
 
 @never_cache
 def equipment_list(request):
-    objs = Application.objects.filter(enddate__gte=timezone.now()).exclude(status=2).order_by('-created',
-                                                                                            'startdate',
-                                                                                            'enddate')
+    objs = Application.objects.all().order_by('-created',
+                                              'startdate',
+                                              'enddate')
     result = render_to_string('equipment-list.html',
                               {'objs': objs},
                               context_instance=RequestContext(request)
                               )
     return HttpResponse(result, content_type="text/plain")
 
-        
+
 @never_cache
 @csrf_protect
 def request_rent(request):
@@ -72,8 +72,8 @@ def request_rent(request):
             phone = form.cleaned_data['phone']
             content = form.cleaned_data['content']
             equipment = form.cleaned_data['equipment']
-            startdate = form.cleaned_data['startdate'] 
-            enddate = form.cleaned_data['enddate'] 
+            startdate = form.cleaned_data['startdate']
+            enddate = form.cleaned_data['enddate']
             try:
                 equip = Equipment.objects.get(name__icontains=equipment)
                 start_intersect = Application.objects.filter(startdate__lte=startdate,
@@ -104,17 +104,18 @@ def request_rent(request):
                                           '?unum={}&pk={}'.format(application.unum,
                                                                   application.pk)
                                           ),
-                           'equipment@botsad.ru', [application.email, 'equipment@botsad.ru'], fail_silently=True)
+                           'equipment@botsad.ru', [application.email,
+                                                   'equipment@botsad.ru'],
+                              fail_silently=True)
 
             except Equipment.DoesNotExist:
                 response_data.update({'error': _(u'Такого оборудования нет')})
-            
         else:
             response_data.update({'error': _(u'Ошибка при заполнении полей формы')})
 
         response_data.update({'form' : form})
-        result = render_to_string('equipment-form.html', response_data,  context_instance=RequestContext(request))
+        result = render_to_string('equipment-form.html',
+                                  response_data,
+                                  context_instance=RequestContext(request))
         gc.collect()
         return HttpResponse(result, content_type="text/plain")
-            
-
