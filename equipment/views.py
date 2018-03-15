@@ -48,8 +48,8 @@ def delete_rent_app(request):
 
 @never_cache
 def equipment_list(request):
-    objs = Application.objects.all().exclude(status=2).order_by('startdate',
-                                                                'enddate')
+    objs = Application.objects.all().exclude(status=2).order_by('-startdate',
+                                                                '-enddate')
     result = render_to_string('equipment-list.html',
                               {'objs': objs},
                               context_instance=RequestContext(request)
