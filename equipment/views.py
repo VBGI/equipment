@@ -82,7 +82,8 @@ def request_rent(request):
                               'Уточните время у куратора уникальной научной установки'
                               'или центра коллективного пользования.\n'
                               'Контактные данные куратора приводятся на странице:\n'
-                              'http://botsad.ru/menu/visitors/collections-bgi-feb-ras/')
+                              'http://botsad.ru/menu/aboutus/centry-kollektivnogo-polzovaniya')
+
                 else:
                     extra = ''
                 application = Application.objects.create(name=name,
