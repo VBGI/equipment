@@ -4,23 +4,18 @@ import gc
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.views.decorators.cache import never_cache
-from django.views.decorators.csrf import csrf_protect, csrf_exempt
+from django.views.decorators.csrf import csrf_protect
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.utils.translation import gettext as _
 from django.template.loader import render_to_string
-from django.utils import timezone
-
 from django.contrib.sites.models import Site
-
-current_site = Site.objects.get_current()
-
-
-
 from .forms import ApplicationForm
-
 from .models import Application, Equipment
 from .messages import *
+
+
+current_site = Site.objects.get_current()
 
 
 @never_cache
@@ -36,10 +31,10 @@ def delete_rent_app(request):
             print obj[0].startdate, obj[0].enddate
             send_mail(app_created_theme.format(obj[0].created),
                       app_deleted.format(obj[0].name,
-                                     obj[0].equipment.name,
-                                     obj[0].startdate,
-                                     obj[0].enddate
-                                     ),
+                                         obj[0].equipment.name,
+                                         obj[0].startdate,
+                                         obj[0].enddate
+                                         ),
                       'equipment@botsad.ru', [obj[0].email], fail_silently=True)
             obj[0].delete()
             return HttpResponse(u'<h2>{}</h2>'.format(app_del_completed))
@@ -60,7 +55,7 @@ def equipment_list(request):
 @never_cache
 @csrf_protect
 def request_rent(request):
-    response_data = {'error' : ''}
+    response_data = {'error': ''}
 
     if request.method == 'POST':
         form = ApplicationForm(request.POST, prefix='equipment')
@@ -76,43 +71,49 @@ def request_rent(request):
             try:
                 equip = Equipment.objects.get(name__icontains=equipment)
                 start_intersect = Application.objects.filter(startdate__lte=startdate,
-                                              enddate__gte=startdate,
-                                              equipment__pk=equip.pk).exclude(status='2').exists()
+                                                             enddate__gte=startdate,
+                                                             equipment__pk=equip.pk).exclude(status='2').exists()
                 end_intersect = Application.objects.filter(startdate__lte=enddate,
-                                              enddate__gte=enddate,
-                                              equipment__pk=equip.pk).exclude(status='2').exists()
+                                                           enddate__gte=enddate,
+                                                           equipment__pk=equip.pk).exclude(status='2').exists()
                 if start_intersect or end_intersect:
-                    response_data.update({'error': _('На данное время уже подана заявка')})
+                    extra = _('Обращаем Ваше внимание на то, что на данное'
+                              'время уже подана заявка. \n'
+                              'Уточните время у куратора уникальной научной установки'
+                              'или центра коллективного пользования.\n'
+                              'Контактные данные куратора приводятся на странице:\n'
+                              'http://botsad.ru/menu/visitors/collections-bgi-feb-ras/')
                 else:
-                    application = Application.objects.create(name=name,
-                                      organization=org,
-                                      email=email,
-                                      phone=phone,
-                                      content=content,
-                                      startdate=startdate,
-                                      enddate=enddate,
-                                      equipment=equip
-                                      )
-                    send_mail(app_created_theme.format(application.created),
-                              app_created.format(name, application.equipment.name,
-                                          application.startdate,
-                                          application.enddate,
-                                          'http://' +\
-                                          current_site.domain +\
-                                          reverse('delete_rent_app') +\
-                                          '?unum={}&pk={}'.format(application.unum,
-                                                                  application.pk)
-                                          ),
-                           'equipment@botsad.ru', [application.email,
-                                                   'equipment@botsad.ru'],
-                              fail_silently=True)
+                    extra = ''
+                application = Application.objects.create(name=name,
+                                                         organization=org,
+                                                         email=email,
+                                                         phone=phone,
+                                                         content=content,
+                                                         startdate=startdate,
+                                                         enddate=enddate,
+                                                         equipment=equip
+                                                         )
+                send_mail(app_created_theme.format(application.created),
+                            app_created.format(name, application.equipment.name,
+                                        application.startdate,
+                                        application.enddate, extra,
+                                        'http://' +\
+                                        current_site.domain +\
+                                        reverse('delete_rent_app') +\
+                                        '?unum={}&pk={}'.format(application.unum,
+                                                                application.pk)
+                                                                ),
+                        'equipment@botsad.ru', [application.email,
+                                                'equipment@botsad.ru'],
+                            fail_silently=True)
 
             except Equipment.DoesNotExist:
                 response_data.update({'error': _(u'Такого оборудования нет')})
         else:
             response_data.update({'error': _(u'Ошибка при заполнении полей формы')})
 
-        response_data.update({'form' : form})
+        response_data.update({'form': form})
         result = render_to_string('equipment-form.html',
                                   response_data,
                                   context_instance=RequestContext(request))
